@@ -63,7 +63,7 @@ jobs:
         run: |
           aws glue update-job --job-name "test" --job-update \
             "Role=AWSGlueServiceRole-glue_test,Command={Name=glueetl,ScriptLocation=s3://${{secrets.S3_BUCKET}}/test_${GITHUB_SHA}.py}" \
-            --region us-east-1
+            --region us-west-1
         
       - name: Cleanup
         run: rm -rf ~/.aws
