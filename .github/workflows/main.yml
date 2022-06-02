@@ -61,7 +61,7 @@ jobs:
         
       - name: Update Glue job
         run: |
-          aws glue update-job --job-name "Test ETL" --job-update \
+          aws glue update-job --job-name "test" --job-update \
             "Role=AWSGlueServiceRole-glue_test,Command={Name=glueetl,ScriptLocation=s3://${{secrets.S3_BUCKET}}/test_${GITHUB_SHA}.py}" \
             --region us-east-1
         
