@@ -57,18 +57,18 @@ jobs:
           aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" > ~/.aws/credentials
             
       - name: Upload to S3
-        run: aws s3 cp test.py s3://${{secrets.S3_BUCKET}}/test_${GITHUB_SHA}.py --region us-east-1
+        run: aws s3 cp test.py s3://${{secrets.S3_BUCKET}}/test_${GITHUB_SHA}.py
         
       - name: Update Glue job
         run: |
-          aws glue update-job --job-name "test" --job-update \
+          aws glue update-job --job-name "test2" --job-update \
             "Role=AWSGlueServiceRole-glue_test,Command={Name=glueetl,ScriptLocation=s3://${{secrets.S3_BUCKET}}/test_${GITHUB_SHA}.py}" \
             --region us-west-1
       
       - name: Start Glue job run
         run : |
           aws glue start-job-run \
-            --job-name test --region us-west-1
+            --job-name test2 --region us-west-1
         
       - name: Cleanup
         run: rm -rf ~/.aws
