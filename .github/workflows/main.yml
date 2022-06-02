@@ -68,7 +68,7 @@ jobs:
       - name: Start Glue job run
         run : |
           aws glue start-job-run \
-            --job-name test
+            --job-name test --region us-west-1
         
       - name: Cleanup
         run: rm -rf ~/.aws
