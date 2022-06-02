@@ -36,7 +36,7 @@ jobs:
       - name: Download python script from build
         uses: actions/download-artifact@v2
         with:
-          name: traffic.py
+          name: test.py
             
       - name: Install AWS CLI
         run: |
@@ -57,12 +57,12 @@ jobs:
           aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" > ~/.aws/credentials
             
       - name: Upload to S3
-        run: aws s3 cp traffic.py s3://${{secrets.S3_BUCKET}}/traffic_${GITHUB_SHA}.py --region us-east-1
+        run: aws s3 cp test.py s3://${{secrets.S3_BUCKET}}/test_${GITHUB_SHA}.py --region us-east-1
         
       - name: Update Glue job
         run: |
-          aws glue update-job --job-name "Traffic ETL" --job-update \
-            "Role=AWSGlueServiceRole-TrafficCrawler,Command={Name=glueetl,ScriptLocation=s3://${{secrets.S3_BUCKET}}/traffic_${GITHUB_SHA}.py},Connections={Connections=redshift}" \
+          aws glue update-job --job-name "Test ETL" --job-update \
+            "Role=AWSGlueServiceRole-glue_test,Command={Name=glueetl,ScriptLocation=s3://${{secrets.S3_BUCKET}}/test_${GITHUB_SHA}.py}" \
             --region us-east-1
         
       - name: Cleanup
